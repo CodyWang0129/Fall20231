@@ -14,27 +14,31 @@ namespace fre::ho_lee {
 	// D(t) = E[D_t] = ???
 	inline double ED(double φ, double σ, double t)
 	{
-		return φ * σ * t; // !!!
+		return std::exp(-φ * t - 0.5 * σ * σ * t * t); // !!!
 	}
 
 	// φ(t) - f(t) = ???
 	inline double convexity(double σ, double t)
 	{
-		return σ * t; // !!!
+		return 0.5 * σ * σ * t; // !!!
 	}
 
 	// log D_t(u) = ???
 	// Return mean and standard deviation of log D_t(u).
 	inline std::normal_distribution<double> logD(double φ, double σ, double t, double u)
 	{
-		return std::normal_distribution(φ, σ * t * u); // !!!
+		double mean = -φ * u - 0.5 * σ * σ * t * u;
+		double std_dev = σ * std::sqrt(t * u);
+		return std::normal_distribution<double>(mean, std_dev); // !!!
 	}
 
 	// φ(u) - f_t(u) = ???
 	// Return mean and standard deviation of φ_t(u) - f_t(u)
 	inline std::normal_distribution<double> convexity(double σ, double t, double u)
 	{
-		return std::normal_distribution(t*u, σ); // !!!
+		double mean = 0.5 * σ * σ * t * u;
+		double std_dev = σ * std::sqrt(t * u);
+		return std::normal_distribution<double>(mean, std_dev); // !!!
 	}
 
 } // namespace fre::ho_lee
